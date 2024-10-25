@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ESNext"
+    ],
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "allowJs": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      //      "@auth/*": [
+      //        "./src/features/auth/*"
+      //      ],
+      //      "@db/*": [
+      //        "./src/db/*"
+      //      ],
+      //      "@db/": [
+      //        "./src/db/db.ts"
+      //      ],
+      //      "@events/*": [
+      //        "./src/features/events/*"
+      //      ],
+      //      "@common/*": [
+      //        "./src/common/*"
+      //      ],
+      //      "@env/": [
+      //        "./src/common/env.ts"
+      //      ]
+    },
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/*.ts",
+    "./src/**/*",
+    "jest.config.ts",
+    "./src/types/global.d.ts",
+    ".eslintrc.cjs",
+    "."
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
