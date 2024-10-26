@@ -1,0 +1,444 @@
+{
+	"info": {
+		"_postman_id": "7cb92b75-1941-43be-b537-9cb468c0db46",
+		"name": "OrganizationManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35312527"
+	},
+	"item": [
+		{
+			"name": "AuthENDPOINTS",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"khaled-tarek1\",\r\n    \"email\": \"kingdodo987@gmail.com\",\r\n    \"password\": \"tataman\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/signup/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \"email\": \"kingdodo987@gmail.com\",\r\n    \"password\": \"tataman\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/signin/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"signin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcxYzNmMTk1MjQzMDdiYTNmZWZhODY1IiwidXNlcklkIjoiNjcxYzNmMTk1MjQzMDdiYTNmZWZhODY1Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE3Mjk5MDg3NjAsImV4cCI6MTczMDUxMzU2MH0.rFXQVUFCO4N0hPaYHsxJJ7mFSL5u4nv7fq3_2WvmatM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/refresh-token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "OrganizationENDPOINTS",
+			"item": [
+				{
+					"name": "getOrganizations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/organization/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get members of organization",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/organization/members/671c52c2f1c71a1e2156405d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"members",
+								"671c52c2f1c71a1e2156405d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrganization",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/organization/671c52c2f1c71a1e2156405d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"671c52c2f1c71a1e2156405d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invite to organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_email\": \"kingdodo987@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/organization/671c52c2f1c71a1e2156405d/invite",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"671c52c2f1c71a1e2156405d",
+								"invite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accept invite to organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/organization/accept-invitation?token=dcdaac61-1b97-4c9f-88d3-5574ea17e6ad",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"accept-invitation"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "dcdaac61-1b97-4c9f-88d3-5574ea17e6ad"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateOrganization",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"updated name\",\r\n   \"description\": \"updated disc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/organization/671c52c2f1c71a1e2156405d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"671c52c2f1c71a1e2156405d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrganization",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/organization/671c52c2f1c71a1e2156405d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								"671c52c2f1c71a1e2156405d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"name yes\",\r\n    \"discription\": \"disc yes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/organization/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"organization",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcxYzUyZmFmMWM3MWExZTIxNTY0MDYwIiwidXNlcklkIjoiNjcxYzUyZmFmMWM3MWExZTIxNTY0MDYwIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3Mjk5MTExOTAsImV4cCI6MTcyOTkxMjk5MH0.nl5Io5wBwPBbNcvtDK3YnohDg7idZmUUYEqr6IHzRyw",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:3000/api"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MjEzNTIwMjR9.APunMo5AL2ipMz3IRZ7wB9_da_EYOf35EtGS8m2NbKE"
+		}
+	]
+}

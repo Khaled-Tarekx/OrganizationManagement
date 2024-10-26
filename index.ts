@@ -13,23 +13,10 @@ const port = process.env.PORT;
 
 client.on('error', (err) => console.log('Redis Client Error', err));
 
-export const createApp = () => {
-	let isListening = false;
-	const app = express();
-	app.use(express.json());
+export const app = express();
+app.use(express.json());
+app.listen(port, () => {
+	console.log(`App is listening on port ${port}`);
+});
 
-	if (!isListening) {
-		app.listen(port, () => {
-			console.log(`App is listening on port ${port}`);
-			console.log(
-				'Swagger UI is available on http://localhost:8080/api-docs'
-			);
-			isListening = true;
-		});
-	}
-	bootstrap(app);
-
-	return app;
-};
-
-// createApp();
+bootstrap(app);

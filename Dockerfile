@@ -1,15 +1,15 @@
-FROM node:20.15-buster
+FROM node:20-alpine
 
-RUN mkdir -p /app/src
-
-WORKDIR /app/src
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN bun install
 
 COPY . .
 
+RUN bun run build
+
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["bun", "run", "dev"]

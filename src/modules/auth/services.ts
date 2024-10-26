@@ -1,9 +1,11 @@
 import {
 	type createUserDTO,
+	JsonTokenI,
 	type loginDTO,
+	PayLoad,
 	refreshSessionDTO,
 } from './types';
-import User from './models';
+import { User } from './models';
 import { checkResource, setTokenCache } from '../../utills/helpers';
 import {
 	LoginError,
@@ -17,8 +19,7 @@ import {
 	hashPassword,
 } from './utilities';
 import { compare } from 'bcrypt';
-import { client } from 'main';
-import { JwtPayload } from './types';
+import { client } from '../../../index';
 import jwt from 'jsonwebtoken';
 
 export const registerUser = async (userInput: createUserDTO) => {
@@ -41,28 +42,26 @@ export const registerUser = async (userInput: createUserDTO) => {
 
 export const loginUser = async (logininput: loginDTO) => {
 	const { email, password } = logininput;
-	const correctEmail = await User.findOne({ email });
-	checkResource(correctEmail, LoginError);
-	const correctPassword = await compare(password, correctEmail.password!);
+	const user = await User.findOne({ email });
+	checkResource(user, LoginError);
+	const correctPassword = await compare(password, user.password!);
 	checkResource(correctPassword, LoginError);
-
 	const [access_token, refresh_token] = await Promise.all([
 		createTokenFromUser(
-			correctEmail,
+			user,
 			process.env.ACCESS_SECRET_KEY,
 			process.env.ACCESS_TOKEN_EXPIRATION
 		),
 		createTokenFromUser(
-			correctEmail,
+			user,
 			process.env.REFRESH_SECRET_KEY,
 			process.env.REFRESH_TOKEN_EXPIRATION
 		),
 	]);
-
-	const refresh_key = generateUserCacheKey(correctEmail._id);
+	const refresh_key = generateUserCacheKey(user._id);
 	await setTokenCache(refresh_key, {
 		newRefreshToken: refresh_token,
-		user_id: correctEmail.id,
+		user_id: user._id,
 	});
 
 	const message = 'you have logged in successfully';
@@ -70,18 +69,27 @@ export const loginUser = async (logininput: loginDTO) => {
 };
 
 export const refreshSession = async (tokenInput: refreshSessionDTO) => {
-	const { refreshToken } = tokenInput;
+	const { refresh_token } = tokenInput;
 	const payload = jwt.verify(
-		refreshToken,
+		refresh_token,
 		process.env.REFRESH_SECRET_KEY
-	) as JwtPayload;
-
+	) as PayLoad;
 	const storedToken = await client.get(generateUserCacheKey(payload.userId));
-
-	if (!storedToken || storedToken !== refreshToken) {
+	if (!storedToken) {
 		throw new RefreshTokenError();
 	}
+
+	const jsonToken: JsonTokenI = JSON.parse(storedToken);
+	console.log(jsonToken);
+	if (
+		!jsonToken.newRefreshToken ||
+		jsonToken.newRefreshToken !== refresh_token
+	) {
+		throw new RefreshTokenError();
+	}
+
 	const user = await User.findById(payload.user_id);
+
 	checkResource(user, UserNotFound);
 	const [newAccessToken, newRefreshToken] = await Promise.all([
 		createTokenFromUser(
@@ -95,7 +103,6 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 			process.env.REFRESH_TOKEN_EXPIRATION
 		),
 	]);
-
 	await setTokenCache(generateUserCacheKey(payload.userId), {
 		newRefreshToken,
 		user_id: payload.user_id,
@@ -103,7 +110,7 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 
 	return {
 		message: 'Tokens refreshed successfully',
-		access_token: newAccessToken,
-		refresh_token: newRefreshToken,
+		accessToken: newAccessToken,
+		refreshToken: newRefreshToken,
 	};
 };

@@ -1,7 +1,7 @@
 import { getModelForClass, prop, type Ref } from '@typegoose/typegoose';
 import { v4 as uuidv4 } from 'uuid';
 import { UserSchema } from '../auth/models';
-import { OrganizationSchema } from '../orgnization/models';
+import { OrganizationSchema } from '../organization/models';
 
 export class InvitationSchema {
 	@prop({ type: String, default: uuidv4() })
@@ -23,6 +23,6 @@ export class InvitationSchema {
 	public createdAt!: Date;
 }
 
-const InvitationModel = getModelForClass(InvitationSchema);
+const Invitation = getModelForClass(InvitationSchema);
 
-export default InvitationModel;
+export { Invitation };

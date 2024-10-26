@@ -1,8 +1,8 @@
 import z from 'zod';
-import { client } from '../../main';
+import { client } from '../..';
 import { Types, Model, type HydratedDocument } from 'mongoose';
 import {
-	LinkExpired,
+	InvitationExpired,
 	NotResourceOwner,
 	NotValidId,
 	TokenStoringFailed,
@@ -12,19 +12,19 @@ import {
 	UserNotFound,
 } from '../modules/auth/errors/cause';
 
-const DEFAULT_EXPIRATION = process.env.REFRESH_EXPIRATION_CASHE;
+const DEFAULT_EXPIRATION = 7 * 24 * 60 * 60;
 interface CachedToken {
-	user_id: string;
+	user_id: string | Types.ObjectId;
 	newRefreshToken: string;
 }
 export const setTokenCache = async (
 	key: string,
 	value: CachedToken,
-	expiration: number = Number(DEFAULT_EXPIRATION)
+	expiration: number = Math.floor(Number(DEFAULT_EXPIRATION))
 ): Promise<void> => {
 	try {
 		await client.setEx(key, expiration, JSON.stringify(value));
-	} catch (err) {
+	} catch (err: unknown) {
 		throw new TokenStoringFailed();
 	}
 };
@@ -105,7 +105,7 @@ export const isResourceOwner = async (
 
 export const isExpired = (expiresAt: Date, createdAt: Date): Boolean => {
 	if (expiresAt.getTime() <= createdAt.getTime()) {
-		throw new LinkExpired();
+		throw new InvitationExpired();
 	}
 	return true;
 };

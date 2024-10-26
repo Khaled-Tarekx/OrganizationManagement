@@ -13,9 +13,13 @@ export const createTokenFromUser = async (
 ) => {
 	let token;
 	try {
-		token = jwt.sign({ id: user._id || user, role: user.role }, secret, {
-			expiresIn: expires,
-		});
+		token = jwt.sign(
+			{ user_id: user._id, userId: user.id, role: user.role },
+			secret,
+			{
+				expiresIn: expires,
+			}
+		);
 	} catch (err) {
 		throw new TokenGenerationFailed();
 	}

@@ -10,17 +10,17 @@ import {
 const router = express.Router();
 
 router.post(
-	'/register',
+	'/signup',
 	validateResource({ bodySchema: createUserSchema }),
 	registerUser
 );
 router.post(
-	'/login',
+	'/signin',
 	validateResource({ bodySchema: loginSchema }),
 	signInUser
 );
 router.post(
-	'/refresh-session',
+	'/refresh-token',
 	validateResource({ bodySchema: refreshTokenSchema }),
 	refreshSession
 );

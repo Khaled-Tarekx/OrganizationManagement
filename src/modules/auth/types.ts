@@ -12,10 +12,14 @@ export enum Role {
 	user = 'user',
 	admin = 'admin',
 }
-export interface JwtPayload {
+export interface PayLoad {
 	userId: string;
 	user_id: string;
 	exp: number;
+}
+export interface JsonTokenI {
+	newRefreshToken: string;
+	user_id: string;
 }
 
 export type refreshSessionDTO = z.infer<typeof refreshTokenSchema>;

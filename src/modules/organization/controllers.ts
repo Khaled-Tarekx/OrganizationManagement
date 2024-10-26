@@ -26,14 +26,16 @@ import {
 import * as GlobalErrorMsg from '../../utills/errors/msg';
 import * as ErrorMsg from './errors/msg';
 
-export const getMembersOfOrg = async (
+export const getMembersOfOrganization = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const { orgId } = req.params;
+	const { organizationId } = req.params;
 	try {
-		const members = await OrgServices.getMembersOfOrg(orgId);
+		const members = await OrgServices.getMembersOfOrganization(
+			organizationId
+		);
 		res.status(StatusCodes.OK).json({ data: members, count: members.length });
 	} catch (err: unknown) {
 		switch (true) {
@@ -44,26 +46,26 @@ export const getMembersOfOrg = async (
 		}
 	}
 };
-export const getAllOrgs = async (
+export const getOrganizations = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	try {
-		const orgs = await OrgServices.getOrgs();
+		const orgs = await OrgServices.getOrganizations();
 		res.status(StatusCodes.OK).json({ data: orgs, count: orgs.length });
 	} catch (err: unknown) {
 		return next(err);
 	}
 };
-export const getOrg = async (
+export const getOrganization = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const { orgId } = req.params;
+	const { organizationId } = req.params;
 	try {
-		const org = await OrgServices.getOrg(orgId);
+		const org = await OrgServices.getOrganization(organizationId);
 		res.status(StatusCodes.OK).json({ data: org });
 	} catch (err: unknown) {
 		switch (true) {
@@ -75,7 +77,7 @@ export const getOrg = async (
 	}
 };
 
-export const createOrg = async (
+export const createOrganization = async (
 	req: TypedRequestBody<typeof createOrgSchema>,
 	res: Response,
 	next: NextFunction
@@ -85,7 +87,10 @@ export const createOrg = async (
 		const user = req.user;
 		checkUser(user);
 
-		const data = await OrgServices.createOrg({ name, description }, user);
+		const data = await OrgServices.createOrganization(
+			{ name, description },
+			user
+		);
 
 		res.status(StatusCodes.OK).json({
 			data,
@@ -104,19 +109,19 @@ export const createOrg = async (
 	}
 };
 
-export const updateOrg = async (
+export const updateOrganization = async (
 	req: TypedRequestBody<typeof updateOrgSchema>,
 	res: Response,
 	next: NextFunction
 ) => {
-	const { orgId } = req.params;
+	const { organizationId } = req.params;
 	const { name, description } = req.body;
 	const user = req.user;
 	try {
 		checkUser(user);
 
-		const updatedOrg = await OrgServices.updateOrg(
-			orgId,
+		const updatedOrg = await OrgServices.updateOrganization(
+			organizationId,
 			{ name, description },
 			user
 		);
@@ -140,16 +145,19 @@ export const updateOrg = async (
 	}
 };
 
-export const deleteOrg = async (
+export const deleteOrganization = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	const user = req.user;
-	const { orgId } = req.params;
+	const { organizationId } = req.params;
 	try {
 		checkUser(user);
-		const deletionMessage = await OrgServices.deleteOrg(orgId, user);
+		const deletionMessage = await OrgServices.deleteOrganization(
+			organizationId,
+			user
+		);
 		res.status(StatusCodes.OK).json({ message: deletionMessage });
 	} catch (err: unknown) {
 		switch (true) {

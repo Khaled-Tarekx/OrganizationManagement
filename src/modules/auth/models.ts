@@ -27,5 +27,5 @@ export class UserSchema {
 	public password?: string;
 }
 
-const UserModel = getModelForClass(UserSchema);
-export default UserModel;
+const User = getModelForClass(UserSchema);
+export { User };

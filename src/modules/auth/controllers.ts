@@ -17,7 +17,7 @@ import {
 } from './errors/cause';
 import { AuthenticationError, NotFound } from '../../custom-errors/main';
 import * as ErrorMsg from './errors/msg';
-import { TokenStoringFailed } from 'src/utills/errors/cause';
+import { TokenStoringFailed } from '../../utills/errors/cause';
 
 export const registerUser = async (
 	req: TypedRequestBody<typeof createUserSchema>,
@@ -74,14 +74,14 @@ export const refreshSession = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const { refreshToken } = req.body;
+	const { refresh_token } = req.body;
 	try {
-		const { message, access_token, refresh_token } =
-			await AuthServices.refreshSession({ refreshToken });
+		const { message, accessToken, refreshToken } =
+			await AuthServices.refreshSession({ refresh_token });
 
 		res
 			.status(StatusCodes.CREATED)
-			.json({ message, access_token, refresh_token });
+			.json({ message, accessToken, refreshToken });
 	} catch (err: unknown) {
 		switch (true) {
 			case err instanceof RefreshTokenError:

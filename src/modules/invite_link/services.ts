@@ -1,12 +1,12 @@
-import InviteLink from './models';
+import { Invitation } from './models';
 import {
 	findResourceById,
 	checkResource,
 	isExpired,
 } from '../../utills/helpers';
-import { Member, Organization } from '../orgnization/models';
+import { Member, Organization } from '../organization/models';
 import type { createInviteDTO } from './types';
-import { AccessLevel } from '../orgnization/types';
+import { AccessLevel } from '../organization/types';
 import {
 	InvitationFailed,
 	inviteNotFound,
@@ -16,8 +16,8 @@ import {
 	MemberCreationFailed,
 	MemberNotFound,
 	OrganizationNotFound,
-} from '../orgnization/errors/cause';
-import User from '../auth/models';
+} from '../organization/errors/cause';
+import { User } from '../auth/models';
 
 export const createInviteLink = async (
 	inviteData: createInviteDTO,
@@ -47,16 +47,17 @@ export const createInviteLink = async (
 	const invitedPerson = await User.findOne({ email: user_email });
 
 	checkResource(invitedPerson, MemberNotFound);
-	const invitation = await InviteLink.create({
+	const invitation = await Invitation.create({
 		user: invitedPerson._id,
 		organization: organization._id,
 	});
 	checkResource(invitation, InvitationFailed);
-	return 'invitation has been ';
+	const message = `invitation has been sent successfully`;
+	return { message, token: invitation.token };
 };
 
 export const acceptInvitation = async (token: string) => {
-	const invitation = await InviteLink.findOne({
+	const invitation = await Invitation.findOne({
 		token,
 	});
 	checkResource(invitation, inviteNotFound);
@@ -66,7 +67,13 @@ export const acceptInvitation = async (token: string) => {
 		organization: invitation.organization._id,
 		access_level: AccessLevel.member,
 	});
-
+	const organization = await findResourceById(
+		Organization,
+		invitation.organization._id,
+		OrganizationNotFound
+	);
+	organization.organization_members.push(member);
+	await organization.save();
 	checkResource(member, MemberCreationFailed);
 	return member;
 };

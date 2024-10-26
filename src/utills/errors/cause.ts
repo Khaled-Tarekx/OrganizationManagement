@@ -10,10 +10,10 @@ class NotValidId extends Error {
 		this.name = 'NotValidId';
 	}
 }
-class LinkExpired extends Error {
+class InvitationExpired extends Error {
 	constructor() {
-		super('invite link already expired');
-		this.name = 'LinkExpired';
+		super('invitation already expired');
+		this.name = 'InvitationExpired';
 	}
 }
 
@@ -30,6 +30,6 @@ export {
 	NotResourceOwner,
 	NotValidId,
 	TokenStoringFailed,
-	LinkExpired,
+	InvitationExpired,
 	ValidationError,
 };
