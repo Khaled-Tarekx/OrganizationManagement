@@ -1,4 +1,8 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+
+config({
+	path: '.env.test',
+});
 
 module.exports = {
 	moduleFileExtensions: ['js', 'json', 'ts'],

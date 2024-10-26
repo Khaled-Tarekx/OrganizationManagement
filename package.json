@@ -5,9 +5,14 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest tests/",
-    "test:watch": "jest --watch /tests",
+    "test:dev": "jest --watch /tests --verbose --debug",
     "dev": "nodemon --exec pnpm run start",
     "start": "tsc  && resolve-tspaths && node ./dist/index.js"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "debug": "1"
+    }
   },
   "type": "module",
   "repository": {

@@ -2,20 +2,21 @@ import request from 'supertest';
 import createApp from '../src/setup/createApp';
 import c from '../src/database/connection';
 import { Application } from 'express';
+import connectWithRetry from '../src/database/connection';
 
 let app: Application;
 
 beforeAll(async () => {
-	const connectWithRetry = await c;
+	await connectWithRetry();
 
 	app = createApp();
-	await request(app).post('/signup').send({
+	await request(app).post('/api/v1/signup').send({
 		name: 'Org Owner',
 		email: 'owner@example.com',
 		password: 'password123',
 	});
 
-	const res = await request(app).post('/signin').send({
+	const res = await request(app).post('/api/v1/signin').send({
 		email: 'owner@example.com',
 		password: 'password123',
 	});
@@ -39,7 +40,7 @@ describe('Organization Endpoints', () => {
 
 	it('should create a new organization', async () => {
 		const res = await request(app)
-			.post('/organization')
+			.post('/api/v1/organization')
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Test Organization',
@@ -52,7 +53,7 @@ describe('Organization Endpoints', () => {
 
 	it('should retrieve the organization', async () => {
 		const res = await request(app)
-			.get(`/organization/${organizationId}`)
+			.get(`/api/v1/organization/${organizationId}`)
 			.set('Authorization', `Bearer ${accessToken}`);
 		expect(res.statusCode).toEqual(200);
 		expect(res.body).toHaveProperty('organization_id', organizationId);
@@ -67,7 +68,7 @@ describe('Organization Endpoints', () => {
 
 	it('should update the organization', async () => {
 		const res = await request(app)
-			.put(`/organization/${organizationId}`)
+			.put(`/api/v1/organization/${organizationId}`)
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Updated Organization',
@@ -79,7 +80,7 @@ describe('Organization Endpoints', () => {
 	});
 	it('should retrieve the organization with the new member', async () => {
 		const res = await request(app)
-			.get(`/organization/${organizationId}`)
+			.get(`/api/v1/organization/${organizationId}`)
 			.set('Authorization', `Bearer ${accessToken}`);
 
 		expect(res.statusCode).toEqual(200);
@@ -88,7 +89,7 @@ describe('Organization Endpoints', () => {
 
 	it('should delete the organization', async () => {
 		const res = await request(app)
-			.delete(`/organization/${organizationId}`)
+			.delete(`/api/v1/organization/${organizationId}`)
 			.set('Authorization', `Bearer ${accessToken}`);
 
 		expect(res.statusCode).toEqual(200);
@@ -105,7 +106,7 @@ describe('Organization Endpoints', () => {
 		});
 
 		const res = await request(app)
-			.post(`/organization/${organizationId}/invite`)
+			.post(`/api/v1/organization/${organizationId}/invite`)
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				user_email: 'invited@example.com',
