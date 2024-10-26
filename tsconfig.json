@@ -23,7 +23,10 @@
     "isolatedModules": true,
     "incremental": true,
     "baseUrl": ".",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      
+    }
   },
   "include": [
     "./src/*.ts",

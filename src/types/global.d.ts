@@ -14,6 +14,9 @@ declare global {
 			BASE_URL: string;
 			REFRESH_EXPIRATION_CASHE: string;
 			NODE_ENV: string;
+			REDIS_HOST: string;
+			REDIS_PORT: string;
+			REDIS_PASSWORD: string;
 		}
 	}
 	namespace Express {

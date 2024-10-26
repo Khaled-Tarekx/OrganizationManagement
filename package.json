@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest tests/",
     "test:watch": "jest --watch /tests",
-    "dev": "nodemon --exec bun start",
+    "dev": "nodemon --exec pnpm run start",
     "start": "tsc  && resolve-tspaths && node ./dist/index.js"
   },
   "type": "module",
@@ -46,7 +46,7 @@
     "redis": "^4.6.15",
     "redis-mock": "^0.56.3",
     "reflect-metadata": "^0.2.2",
-    "resolve-tspaths": "^0.8.19",
+    "resolve-tspaths": "^0.8.22",
     "swagger-jsdoc": "^6.2.8",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",

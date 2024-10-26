@@ -12,5 +12,8 @@ export const env = z
 		REFRESH_TOKEN_EXPIRATION: z.string(),
 		REFRESH_EXPIRATION_CASHE: z.string(),
 		BASE_URL: z.string(),
+		REDIS_HOST: z.string(),
+		REDIS_PORT: z.string(),
+		REDIS_PASSWORD: z.string(),
 	})
 	.parse(process.env);
