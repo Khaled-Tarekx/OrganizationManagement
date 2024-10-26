@@ -21,36 +21,15 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "paths": {
-      //      "@auth/*": [
-      //        "./src/features/auth/*"
-      //      ],
-      //      "@db/*": [
-      //        "./src/db/*"
-      //      ],
-      //      "@db/": [
-      //        "./src/db/db.ts"
-      //      ],
-      //      "@events/*": [
-      //        "./src/features/events/*"
-      //      ],
-      //      "@common/*": [
-      //        "./src/common/*"
-      //      ],
-      //      "@env/": [
-      //        "./src/common/env.ts"
-      //      ]
-    },
     "skipLibCheck": true
   },
   "include": [
     "./src/*.ts",
+    "./src/types/**/*.d.ts",
     "./src/**/*",
     "jest.config.ts",
-    "./src/types/global.d.ts",
     ".eslintrc.cjs",
     "."
   ],

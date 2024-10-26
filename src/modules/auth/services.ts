@@ -19,8 +19,8 @@ import {
 	hashPassword,
 } from './utilities';
 import { compare } from 'bcrypt';
-import { client } from '../../../index';
 import jwt from 'jsonwebtoken';
+import { redisClient } from '../../setup/redisClient';
 
 export const registerUser = async (userInput: createUserDTO) => {
 	const { name, email, password } = userInput;
@@ -74,7 +74,10 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 		refresh_token,
 		process.env.REFRESH_SECRET_KEY
 	) as PayLoad;
-	const storedToken = await client.get(generateUserCacheKey(payload.userId));
+
+	const storedToken = await redisClient.get(
+		generateUserCacheKey(payload.userId)
+	);
 	if (!storedToken) {
 		throw new RefreshTokenError();
 	}

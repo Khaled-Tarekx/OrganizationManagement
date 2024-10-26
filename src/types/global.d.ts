@@ -1,8 +1,10 @@
-import 'dotenv/config';
+import { InferRawDocType, Types } from 'mongoose';
+import { UserSchema } from './models';
+
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
-			URI: string;
+			MONGO_URI: string;
 			PORT: string;
 			SALT_ROUNTS: string;
 			ACCESS_SECRET_KEY: string;
@@ -12,6 +14,15 @@ declare global {
 			BASE_URL: string;
 			REFRESH_EXPIRATION_CASHE: string;
 			NODE_ENV: string;
+		}
+	}
+	namespace Express {
+		interface User extends InferRawDocType<UserSchema> {
+			id: string;
+			_id: string | Types.ObjectId;
+		}
+		interface Request {
+			user?: User;
 		}
 	}
 }

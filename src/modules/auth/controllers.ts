@@ -56,6 +56,12 @@ export const signInUser = async (
 
 		res.status(StatusCodes.OK).json({ message, access_token, refresh_token });
 	} catch (err: unknown) {
+		if (err instanceof LoginError) {
+			return next(new AuthenticationError(ErrorMsg.LoginError));
+		}
+
+		if (err instanceof TokenGenerationFailed) {
+		}
 		switch (true) {
 			case err instanceof LoginError:
 				return next(new AuthenticationError(ErrorMsg.LoginError));
@@ -79,9 +85,7 @@ export const refreshSession = async (
 		const { message, accessToken, refreshToken } =
 			await AuthServices.refreshSession({ refresh_token });
 
-		res
-			.status(StatusCodes.CREATED)
-			.json({ message, accessToken, refreshToken });
+		res.status(StatusCodes.OK).json({ message, accessToken, refreshToken });
 	} catch (err: unknown) {
 		switch (true) {
 			case err instanceof RefreshTokenError:

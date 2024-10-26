@@ -1,5 +1,4 @@
 import z from 'zod';
-import { client } from '../..';
 import { Types, Model, type HydratedDocument } from 'mongoose';
 import {
 	InvitationExpired,
@@ -11,6 +10,7 @@ import {
 	RefreshTokenError,
 	UserNotFound,
 } from '../modules/auth/errors/cause';
+import { redisClient } from '../setup/redisClient';
 
 const DEFAULT_EXPIRATION = 7 * 24 * 60 * 60;
 interface CachedToken {
@@ -23,7 +23,7 @@ export const setTokenCache = async (
 	expiration: number = Math.floor(Number(DEFAULT_EXPIRATION))
 ): Promise<void> => {
 	try {
-		await client.setEx(key, expiration, JSON.stringify(value));
+		await redisClient.setEx(key, expiration, JSON.stringify(value));
 	} catch (err: unknown) {
 		throw new TokenStoringFailed();
 	}
@@ -35,12 +35,12 @@ export const getOrSetCache = async <T>(
 	expiration: number = Number(DEFAULT_EXPIRATION)
 ): Promise<CachedToken> => {
 	try {
-		const data = await client.get(key);
+		const data = await redisClient.get(key);
 		if (data != null) {
 			return JSON.parse(data);
 		}
 
-		await client.setEx(key, expiration, JSON.stringify(value));
+		await redisClient.setEx(key, expiration, JSON.stringify(value));
 		return value;
 	} catch (err) {
 		throw new RefreshTokenError();

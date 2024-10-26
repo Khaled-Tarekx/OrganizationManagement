@@ -1,35 +1,41 @@
 import request from 'supertest';
-import { app } from '../index';
-import mongoose from 'mongoose';
-import { User } from '../src/modules/auth/models';
-import { Organization } from '../src/modules/organization/models';
+import createApp from '../src/setup/createApp';
+import c from '../src/database/connection';
+import { Application } from 'express';
+
+let app: Application;
+
+beforeAll(async () => {
+	const connectWithRetry = await c;
+
+	app = createApp();
+	await request(app).post('/signup').send({
+		name: 'Org Owner',
+		email: 'owner@example.com',
+		password: 'password123',
+	});
+
+	const res = await request(app).post('/signin').send({
+		email: 'owner@example.com',
+		password: 'password123',
+	});
+
+	accessToken = res.body.access_token;
+});
 
 let accessToken: string;
 let organizationId: string;
 
 describe('Organization Endpoints', () => {
-	beforeAll(async () => {
-		await mongoose.connect(process.env.MONGO_URI!);
+	// beforeAll(async () => {
+	// 	await mongoose.connect(process.env.MONGO_URI);
+	// });
 
-		await request(app).post('/signup').send({
-			name: 'Org Owner',
-			email: 'owner@example.com',
-			password: 'password123',
-		});
-
-		const res = await request(app).post('/signin').send({
-			email: 'owner@example.com',
-			password: 'password123',
-		});
-
-		accessToken = res.body.access_token;
-	});
-
-	afterAll(async () => {
-		await User.deleteMany({});
-		await Organization.deleteMany({});
-		await mongoose.connection.close();
-	});
+	// afterAll(async () => {
+	// 	await User.deleteMany({});
+	// 	await Organization.deleteMany({});
+	// 	await mongoose.connection.close();
+	// });
 
 	it('should create a new organization', async () => {
 		const res = await request(app)

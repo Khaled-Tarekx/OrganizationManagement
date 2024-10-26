@@ -5,7 +5,8 @@ import OrganizationRouter from '../modules/organization/routes';
 import cors from 'cors';
 import { authMiddleware } from '../modules/auth/middleware';
 
-const bootstrap = (app: Application) => {
+const createApp = () => {
+	const app = express();
 	app.use(express.json());
 	app.use(cors());
 
@@ -13,6 +14,8 @@ const bootstrap = (app: Application) => {
 
 	app.use('/api/v1/organization', authMiddleware, OrganizationRouter);
 	app.use(ErrorHandler);
+
+	return app;
 };
 
-export default bootstrap;
+export default createApp;

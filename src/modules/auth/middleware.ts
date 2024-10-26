@@ -8,7 +8,6 @@ import {
 import { User } from './models';
 import { findResourceById } from '../../utills/helpers';
 import { PayLoad } from './types';
-
 const access_secret = process.env.ACCESS_SECRET_KEY;
 
 export const authMiddleware = async (

@@ -1,17 +1,17 @@
 services:
   app:
     build:
-      context: .  # Assumes you have a Dockerfile in the same directory
+      context: .
     env_file:
-      - .env  # Environment variables for Express server
+      - .env
     ports:
-      - "8080:8080"  # Map the Express server port to localhost
+      - "8080:8080"
     depends_on:
-      - redis  # Ensures Redis starts before the Express app
+      - redis
 
   redis:
     image: "redis:latest"
-    env_file:
-      - .env  # Environment variables for Redis server
+    environment:
+      - REDIS_PASSWORD=admin # should be somewhere else
     ports:
-      - "6379:6379"  # Map the Redis port to localhost
+      - "6379:6379"
