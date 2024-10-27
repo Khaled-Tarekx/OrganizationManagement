@@ -14,7 +14,7 @@ export interface PayLoad {
 	user_id: string;
 	exp: number;
 }
-export interface JsonTokenI {
+export interface JsonToken {
 	newRefreshToken: string;
 	user_id: string;
 }

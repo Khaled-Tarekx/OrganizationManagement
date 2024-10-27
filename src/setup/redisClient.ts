@@ -1,5 +1,4 @@
 import { createClient } from 'redis';
-import { RedisClient } from 'redis-mock';
 
 let redisClient: ReturnType<typeof createClient>;
 

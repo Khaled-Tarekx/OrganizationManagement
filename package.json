@@ -5,14 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest tests/",
-    "test:dev": "jest --watch /tests --verbose --debug",
+    "test:dev": "jest /tests --verbose",
     "dev": "nodemon --exec pnpm run start",
     "start": "tsc  && resolve-tspaths && node ./dist/index.js"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "debug": "1"
-    }
   },
   "type": "module",
   "repository": {
@@ -22,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^9.1.0",
     "@typegoose/typegoose": "^12.6.0",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.6",
@@ -49,7 +45,6 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "redis": "^4.6.15",
-    "redis-mock": "^0.56.3",
     "reflect-metadata": "^0.2.2",
     "resolve-tspaths": "^0.8.22",
     "swagger-jsdoc": "^6.2.8",

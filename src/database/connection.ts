@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const uri = process.env.MONGO_URI;
+const connectMongodbWithRetry = async () => {
+	const uri = process.env.MONGO_URI;
 
-const connectWithRetry = async () => {
 	console.log('MongoDB connection with retry');
 	await mongoose
 		.connect(uri, {
@@ -18,7 +18,7 @@ const connectWithRetry = async () => {
 				'MongoDB connection unsuccessful, retry after 5 seconds.',
 				err
 			);
-			setTimeout(connectWithRetry, 5000);
+			setTimeout(connectMongodbWithRetry, 5000);
 		});
 };
 
@@ -36,4 +36,4 @@ mongoose.connection.on('disconnected', () => {
 
 mongoose.set('debug', true);
 
-export default connectWithRetry;
+export { connectMongodbWithRetry };

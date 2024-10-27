@@ -25,6 +25,7 @@ export const setTokenCache = async (
 	try {
 		await redisClient.setEx(key, expiration, JSON.stringify(value));
 	} catch (err: unknown) {
+		console.error(err);
 		throw new TokenStoringFailed();
 	}
 };

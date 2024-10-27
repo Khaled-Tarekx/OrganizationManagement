@@ -57,21 +57,16 @@ export const signInUser = async (
 		res.status(StatusCodes.OK).json({ message, access_token, refresh_token });
 	} catch (err: unknown) {
 		if (err instanceof LoginError) {
-			return next(new AuthenticationError(ErrorMsg.LoginError));
+			return next(new AuthenticationError(err.message));
 		}
 
 		if (err instanceof TokenGenerationFailed) {
+			return next(new NotFound(ErrorMsg.LoginError));
 		}
-		switch (true) {
-			case err instanceof LoginError:
-				return next(new AuthenticationError(ErrorMsg.LoginError));
-			case err instanceof TokenGenerationFailed:
-				return next(new NotFound(ErrorMsg.LoginError));
-			case err instanceof TokenStoringFailed:
-				return next(new NotFound(ErrorMsg.LoginError));
-			default:
-				return next(err);
+		if (err instanceof TokenStoringFailed) {
+			return next(new NotFound(ErrorMsg.LoginError));
 		}
+		return next(err);
 	}
 };
 
@@ -87,6 +82,7 @@ export const refreshSession = async (
 
 		res.status(StatusCodes.OK).json({ message, accessToken, refreshToken });
 	} catch (err: unknown) {
+		console.error(err);
 		switch (true) {
 			case err instanceof RefreshTokenError:
 				return next(new AuthenticationError(ErrorMsg.SessionExpired));

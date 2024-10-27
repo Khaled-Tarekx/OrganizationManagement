@@ -1,6 +1,6 @@
 import {
 	type createUserDTO,
-	JsonTokenI,
+	JsonToken,
 	type loginDTO,
 	PayLoad,
 	refreshSessionDTO,
@@ -46,6 +46,7 @@ export const loginUser = async (logininput: loginDTO) => {
 	checkResource(user, LoginError);
 	const correctPassword = await compare(password, user.password!);
 	checkResource(correctPassword, LoginError);
+
 	const [access_token, refresh_token] = await Promise.all([
 		createTokenFromUser(
 			user,
@@ -58,12 +59,12 @@ export const loginUser = async (logininput: loginDTO) => {
 			process.env.REFRESH_TOKEN_EXPIRATION
 		),
 	]);
+
 	const refresh_key = generateUserCacheKey(user._id);
 	await setTokenCache(refresh_key, {
 		newRefreshToken: refresh_token,
 		user_id: user._id,
 	});
-
 	const message = 'you have logged in successfully';
 	return { message, access_token, refresh_token };
 };
@@ -74,24 +75,29 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 		refresh_token,
 		process.env.REFRESH_SECRET_KEY
 	) as PayLoad;
+	console.error(1);
 
 	const storedToken = await redisClient.get(
 		generateUserCacheKey(payload.userId)
 	);
 	if (!storedToken) {
+		console.error(2);
 		throw new RefreshTokenError();
 	}
 
-	const jsonToken: JsonTokenI = JSON.parse(storedToken);
-	console.log(jsonToken);
+	const jsonToken: JsonToken = JSON.parse(storedToken);
+
 	if (
 		!jsonToken.newRefreshToken ||
 		jsonToken.newRefreshToken !== refresh_token
 	) {
+		console.error(3);
+
 		throw new RefreshTokenError();
 	}
 
 	const user = await User.findById(payload.user_id);
+	console.error(4);
 
 	checkResource(user, UserNotFound);
 	const [newAccessToken, newRefreshToken] = await Promise.all([
@@ -106,6 +112,8 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 			process.env.REFRESH_TOKEN_EXPIRATION
 		),
 	]);
+	console.error(5);
+
 	await setTokenCache(generateUserCacheKey(payload.userId), {
 		newRefreshToken,
 		user_id: payload.user_id,

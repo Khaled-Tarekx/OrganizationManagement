@@ -1,6 +1,5 @@
 import { InferRawDocType, Types } from 'mongoose';
 import { UserSchema } from './models';
-
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
@@ -13,7 +12,7 @@ declare global {
 			REFRESH_TOKEN_EXPIRATION: string;
 			BASE_URL: string;
 			REFRESH_EXPIRATION_CASHE: string;
-			NODE_ENV: string;
+			NODE_ENV: 'prod' | 'dev' | 'test';
 			REDIS_HOST: string;
 			REDIS_PORT: string;
 			REDIS_PASSWORD: string;
