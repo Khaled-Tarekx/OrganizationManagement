@@ -15,11 +15,9 @@ const bootstrap = async () => {
 	await redisClient.connect();
 	await connectMongodbWithRetry();
 
-	if (process.env.NODE_ENV !== 'prod') {
-		app.listen(port, () => {
-			console.log(`App is listening on port ${port}`);
-		});
-	}
+	app.listen(port, () => {
+		console.log(`App is listening on port ${port}`);
+	});
 };
 
 bootstrap();
