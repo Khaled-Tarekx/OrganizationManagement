@@ -15,9 +15,14 @@ import {
 	TokenGenerationFailed,
 	UserNotFound,
 } from './errors/cause';
-import { AuthenticationError, NotFound } from '../../custom-errors/main';
+import {
+	AuthenticationError,
+	Forbidden,
+	NotFound,
+} from '../../custom-errors/main';
 import * as ErrorMsg from './errors/msg';
 import { TokenStoringFailed } from '../../utills/errors/cause';
+import jwt from 'jsonwebtoken';
 
 export const registerUser = async (
 	req: TypedRequestBody<typeof createUserSchema>,
@@ -33,14 +38,13 @@ export const registerUser = async (
 		});
 		res.status(StatusCodes.CREATED).json({ message });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof PasswordHashingError:
-				return next(new AuthenticationError(ErrorMsg.UserRegistraionFailed));
-			case err instanceof RegistrationError:
-				return next(new AuthenticationError(ErrorMsg.UserRegistraionFailed));
-			default:
-				return next(err);
+		if (
+			err instanceof PasswordHashingError ||
+			err instanceof RegistrationError
+		) {
+			return next(new AuthenticationError(ErrorMsg.UserRegistraionFailed));
 		}
+		return next(err);
 	}
 };
 
@@ -59,11 +63,10 @@ export const signInUser = async (
 		if (err instanceof LoginError) {
 			return next(new AuthenticationError(err.message));
 		}
-
-		if (err instanceof TokenGenerationFailed) {
-			return next(new NotFound(ErrorMsg.LoginError));
-		}
-		if (err instanceof TokenStoringFailed) {
+		if (
+			err instanceof TokenGenerationFailed ||
+			err instanceof TokenStoringFailed
+		) {
 			return next(new NotFound(ErrorMsg.LoginError));
 		}
 		return next(err);
@@ -82,18 +85,16 @@ export const refreshSession = async (
 
 		res.status(StatusCodes.OK).json({ message, accessToken, refreshToken });
 	} catch (err: unknown) {
-		console.error(err);
-		switch (true) {
-			case err instanceof RefreshTokenError:
-				return next(new AuthenticationError(ErrorMsg.SessionExpired));
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(ErrorMsg.SessionExpired));
-			case err instanceof TokenGenerationFailed:
-				return next(new AuthenticationError(ErrorMsg.SessionExpired));
-			case err instanceof TokenStoringFailed:
-				return next(new AuthenticationError(ErrorMsg.SessionExpired));
-			default:
-				return next(err);
+		if (
+			err instanceof RefreshTokenError ||
+			err instanceof UserNotFound ||
+			err instanceof TokenGenerationFailed ||
+			err instanceof TokenStoringFailed ||
+			err instanceof jwt.JsonWebTokenError
+		) {
+			return next(new AuthenticationError(ErrorMsg.SessionExpired));
 		}
+
+		return next(new Forbidden());
 	}
 };

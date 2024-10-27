@@ -18,7 +18,7 @@ import {
 	generateUserCacheKey,
 	hashPassword,
 } from './utilities';
-import { compare } from 'bcrypt';
+import { verify } from 'argon2';
 import jwt from 'jsonwebtoken';
 import { redisClient } from '../../setup/redisClient';
 
@@ -26,7 +26,6 @@ export const registerUser = async (userInput: createUserDTO) => {
 	const { name, email, password } = userInput;
 	const hashedPassword = await hashPassword(
 		password,
-		process.env.SALT_ROUNTS
 	);
 	const user = await User.create({
 		name,
@@ -44,7 +43,7 @@ export const loginUser = async (logininput: loginDTO) => {
 	const { email, password } = logininput;
 	const user = await User.findOne({ email });
 	checkResource(user, LoginError);
-	const correctPassword = await compare(password, user.password!);
+	const correctPassword = await verify(user.password!, password);
 	checkResource(correctPassword, LoginError);
 
 	const [access_token, refresh_token] = await Promise.all([
@@ -75,13 +74,11 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 		refresh_token,
 		process.env.REFRESH_SECRET_KEY
 	) as PayLoad;
-	console.error(1);
 
 	const storedToken = await redisClient.get(
 		generateUserCacheKey(payload.userId)
 	);
 	if (!storedToken) {
-		console.error(2);
 		throw new RefreshTokenError();
 	}
 
@@ -91,15 +88,12 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 		!jsonToken.newRefreshToken ||
 		jsonToken.newRefreshToken !== refresh_token
 	) {
-		console.error(3);
-
 		throw new RefreshTokenError();
 	}
 
 	const user = await User.findById(payload.user_id);
-	console.error(4);
-
 	checkResource(user, UserNotFound);
+
 	const [newAccessToken, newRefreshToken] = await Promise.all([
 		createTokenFromUser(
 			user,
@@ -112,7 +106,6 @@ export const refreshSession = async (tokenInput: refreshSessionDTO) => {
 			process.env.REFRESH_TOKEN_EXPIRATION
 		),
 	]);
-	console.error(5);
 
 	await setTokenCache(generateUserCacheKey(payload.userId), {
 		newRefreshToken,

@@ -44,27 +44,30 @@ export const createInviteLink = async (
 	try {
 		const user = req.user;
 		checkUser(user);
-		const { message, token } = await InviteServices.createInviteLink(
+		
+		const { message, token } = await InviteServices.invite(
 			{ organizationId, user_email },
 			user
 		);
 
-		res.status(StatusCodes.CREATED).json({ message, token });
+		res.status(StatusCodes.OK).json({ message, token });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
-			case err instanceof OrganizationNotFound:
-				return next(new NotFound(OrganizationErrors.OrgNotFound));
-			case err instanceof NotAdminOrOwner:
-				return next(new Forbidden(ErrorMsg.NotOwnerOrAdmin));
-			case err instanceof MemberNotFound:
-				return next(new Forbidden(OrganizationErrors.MemberNotFound));
-			case err instanceof InvitationFailed:
-				return next(new Conflict(ErrorMsg.InvitationFailed));
-			default:
-				return next(err);
+		if (err instanceof UserNotFound) {
+			return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
 		}
+		if (err instanceof OrganizationNotFound) {
+			return next(new NotFound(OrganizationErrors.OrgNotFound));
+		}
+		if (err instanceof NotAdminOrOwner) {
+			return next(new Forbidden(ErrorMsg.NotOwnerOrAdmin));
+		}
+		if (err instanceof MemberNotFound) {
+			return next(new Forbidden(OrganizationErrors.MemberNotFound));
+		}
+		if (err instanceof InvitationFailed) {
+			return next(new Conflict(ErrorMsg.InvitationFailed));
+		}
+		return next(err);
 	}
 };
 
@@ -79,17 +82,18 @@ export const acceptInvitation = async (
 
 		res.status(StatusCodes.CREATED).json({ member });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
-			case err instanceof inviteNotFound:
-				return next(new NotFound(ErrorMsg.InvitationNotFound));
-			case err instanceof InvitationExpired:
-				return next(new ResourceGone(ErrorMsg.InvitationExpired));
-			case err instanceof MemberCreationFailed:
-				return next(new Conflict(ErrorMsg.MempershipFailed));
-			default:
-				return next(err);
+		if (err instanceof UserNotFound) {
+			return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
 		}
+		if (err instanceof inviteNotFound) {
+			return next(new NotFound(ErrorMsg.InvitationNotFound));
+		}
+		if (err instanceof InvitationExpired) {
+			return next(new ResourceGone(ErrorMsg.InvitationExpired));
+		}
+		if (err instanceof MemberCreationFailed) {
+			return next(new Conflict(ErrorMsg.MempershipFailed));
+		}
+		return next(err);
 	}
 };

@@ -1,15 +1,14 @@
-FROM node:20-alpine
+FROM node:20-bullseye
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN bun install
+RUN npm install -g pnpm
+RUN pnpm install
 
 COPY . .
 
-RUN bun run build
-
 EXPOSE 8080
 
-CMD ["bun", "run", "dev"]
+CMD ["pnpm", "run", "dev"]

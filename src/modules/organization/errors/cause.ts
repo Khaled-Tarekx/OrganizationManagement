@@ -5,6 +5,13 @@ class OrganizationNotFound extends Error {
 	}
 }
 
+class MemberAlreadyExists extends Error {
+	constructor() {
+		super('member already exists');
+		this.name = 'MemberAlreadyExists';
+	}
+}
+
 class OrganizationCreationFailed extends Error {
 	constructor() {
 		super('org creation failed');
@@ -78,4 +85,5 @@ export {
 	MemberNotFound,
 	InvalidRole,
 	NotAnOwnerPermissionFailed,
+	MemberAlreadyExists,
 };

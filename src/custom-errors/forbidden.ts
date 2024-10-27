@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import CustomError from './custom-error';
 
 class Forbidden extends CustomError {
-	constructor(message: string) {
+	constructor(message: string = "forbidden") {
 		super(message, StatusCodes.FORBIDDEN);
 	}
 }

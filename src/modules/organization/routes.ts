@@ -7,15 +7,12 @@ import {
 	deleteOrganization,
 	updateOrganization,
 } from './controllers';
-import {
-	acceptInvitation,
-	createInviteLink,
-} from '../invite_link/controllers';
+import { acceptInvitation, createInviteLink } from '../invite/controllers';
 import { validateResource } from '../../utills/middlewares';
 import {
 	acceptInvitationSchema,
 	createInviteSchema,
-} from '../invite_link/validation';
+} from '../invite/validation';
 
 const router = express.Router();
 router.route('/members/:organizationId/').get(getMembersOfOrganization);

@@ -7,6 +7,7 @@ import {
 } from '../../utills/helpers';
 import type { orgDTO, updateOrgDTO } from './types';
 import {
+	InvalidRole,
 	MemberCreationFailed,
 	MemberNotFound,
 	NotAnOwnerPermissionFailed,
@@ -101,7 +102,7 @@ export const updateOrganization = async (
 		access_level: AccessLevel.owner,
 	}).populate({ path: 'user', select: '-password -role' });
 
-	checkResource(owner, MemberNotFound);
+	checkResource(owner, InvalidRole);
 
 	const updatedOrganization = await Organization.findByIdAndUpdate(
 		organizationId,

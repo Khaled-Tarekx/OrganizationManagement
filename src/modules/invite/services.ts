@@ -16,10 +16,11 @@ import {
 	MemberCreationFailed,
 	MemberNotFound,
 	OrganizationNotFound,
+	MemberAlreadyExists,
 } from '../organization/errors/cause';
 import { User } from '../auth/models';
 
-export const createInviteLink = async (
+export const invite = async (
 	inviteData: createInviteDTO,
 	user: Express.User
 ) => {
@@ -47,6 +48,15 @@ export const createInviteLink = async (
 	const invitedPerson = await User.findOne({ email: user_email });
 
 	checkResource(invitedPerson, MemberNotFound);
+	
+	const existingMember = await Member.findOne({
+		_id: invitedPerson._id,
+	});
+	
+	if (existingMember) {
+		throw new MemberAlreadyExists();
+	}
+	
 	const invitation = await Invitation.create({
 		user: invitedPerson._id,
 		organization: organization._id,

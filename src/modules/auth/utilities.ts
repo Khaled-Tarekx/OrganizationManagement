@@ -1,7 +1,7 @@
 import { UserSchema } from './models';
 import jwt from 'jsonwebtoken';
 
-import { hash } from 'bcrypt';
+import { hash } from 'argon2';
 import { DocumentType } from '@typegoose/typegoose';
 import { PasswordHashingError, TokenGenerationFailed } from './errors/cause';
 import { Types } from 'mongoose';
@@ -9,7 +9,7 @@ import { Types } from 'mongoose';
 export const createTokenFromUser = async (
 	user: DocumentType<UserSchema>,
 	secret: string,
-	expires?: string
+	expires: string = "1h"
 ) => {
 	let token;
 	try {
@@ -21,6 +21,7 @@ export const createTokenFromUser = async (
 			}
 		);
 	} catch (err) {
+		console.error(err);
 		throw new TokenGenerationFailed();
 	}
 	return token;
@@ -34,12 +35,12 @@ export const generateUserCacheKey = (
 
 export const hashPassword = async (
 	normalPassword: string,
-	saltRounds: string | undefined
 ): Promise<string> => {
 	if (!normalPassword) {
 		throw new PasswordHashingError(
 			'the hashing process of the password failed'
 		);
 	}
-	return hash(normalPassword, Number(saltRounds));
+	
+	return hash(normalPassword);
 };

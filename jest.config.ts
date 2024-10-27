@@ -17,11 +17,8 @@ const jestConfig: jest.Config = {
 	testEnvironment: 'node',
 	setupFilesAfterEnv: [
 		'./tests/utils/setup.ts',
-		'./tests/utils/setupMongo.ts',
 	],
 	roots: ['<rootDir>/tests'],
-	globalSetup: '<rootDir>/tests/utils/globalSetup.ts',
-	globalTeardown: '<rootDir>/tests/utils/globalTeardown.ts',
 };
 
 module.exports = jestConfig;

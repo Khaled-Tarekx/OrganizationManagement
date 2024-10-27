@@ -8,6 +8,7 @@ const MemberUpdateNotPermitted = 'you are not allowed to update this memeber';
 const MemberUpdatingFailed = 'couldnt update the given member';
 const MemberDeletionFailed = 'couldnt delete the given member';
 const MemberCreationFailed = 'couldnt create member with the assosiated org';
+const MemberAlreadyExists = "member already exists in the organization"
 
 export {
 	OrgNotFound,
@@ -20,4 +21,5 @@ export {
 	MemberUpdatingFailed,
 	MemberDeletionFailed,
 	MemberCreationFailed,
+	MemberAlreadyExists,
 };

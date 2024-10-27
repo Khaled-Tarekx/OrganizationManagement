@@ -15,6 +15,8 @@ import {
 
 import { UserNotFound } from '../auth/errors/cause';
 import {
+	InvalidRole,
+	MemberAlreadyExists,
 	MemberCreationFailed,
 	MemberNotFound,
 	NotAnOwnerPermissionFailed,
@@ -25,6 +27,7 @@ import {
 } from './errors/cause';
 import * as GlobalErrorMsg from '../../utills/errors/msg';
 import * as ErrorMsg from './errors/msg';
+import Forbidden from "../../custom-errors/forbidden";
 
 export const getMembersOfOrganization = async (
 	req: Request,
@@ -38,14 +41,13 @@ export const getMembersOfOrganization = async (
 		);
 		res.status(StatusCodes.OK).json({ data: members, count: members.length });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof NotValidId:
-				return next(new BadRequestError(GlobalErrorMsg.NotValidId));
-			default:
-				return next(err);
+		if (err instanceof NotValidId) {
+			return next(new BadRequestError(GlobalErrorMsg.NotValidId));
 		}
+		return next(err);
 	}
 };
+
 export const getOrganizations = async (
 	req: Request,
 	res: Response,
@@ -58,6 +60,7 @@ export const getOrganizations = async (
 		return next(err);
 	}
 };
+
 export const getOrganization = async (
 	req: Request,
 	res: Response,
@@ -68,12 +71,10 @@ export const getOrganization = async (
 		const org = await OrgServices.getOrganization(organizationId);
 		res.status(StatusCodes.OK).json({ data: org });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof NotValidId:
-				return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
-			default:
-				return next(err);
+		if (err instanceof NotValidId) {
+			return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
 		}
+		return next(new NotFound());
 	}
 };
 
@@ -92,20 +93,23 @@ export const createOrganization = async (
 			user
 		);
 
-		res.status(StatusCodes.OK).json({
+		res.status(StatusCodes.CREATED).json({
 			data,
 		});
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
-			case err instanceof MemberCreationFailed:
-				return next(new NotFound(ErrorMsg.MemberCreationFailed));
-			case err instanceof OrganizationCreationFailed:
-				return next(new Conflict(ErrorMsg.OrgCreationFailed));
-			default:
-				return next(err);
+		if (err instanceof UserNotFound) {
+			return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
 		}
+		if (err instanceof MemberCreationFailed) {
+			return next(new NotFound(ErrorMsg.MemberCreationFailed));
+		}
+		if (err instanceof OrganizationCreationFailed) {
+			return next(new Conflict(ErrorMsg.OrgCreationFailed));
+		}
+		if (err instanceof MemberAlreadyExists) {
+			return next(new Forbidden(ErrorMsg.MemberAlreadyExists));
+		}
+		return next(err);
 	}
 };
 
@@ -130,18 +134,23 @@ export const updateOrganization = async (
 			data: updatedOrg,
 		});
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
-			case err instanceof NotValidId:
-				return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
-			case err instanceof MemberNotFound:
-				return next(new NotFound(ErrorMsg.UnAuthorizedOrgUpdate));
-			case err instanceof OrganizationUpdatingFailed:
-				return next(new Conflict(ErrorMsg.UnAuthorizedOrgUpdate));
-			default:
-				next(err);
+		if (err instanceof UserNotFound) {
+			return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
 		}
+		if (err instanceof NotValidId) {
+			return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
+		}
+		if (err instanceof MemberNotFound) {
+			return next(new NotFound(ErrorMsg.UnAuthorizedOrgUpdate));
+		}
+		if (err instanceof OrganizationUpdatingFailed) {
+			return next(new Conflict(ErrorMsg.UnAuthorizedOrgUpdate));
+		}
+		
+		if (err instanceof InvalidRole) {
+			return next(new Forbidden());
+		}
+		return next(err);
 	}
 };
 
@@ -160,19 +169,21 @@ export const deleteOrganization = async (
 		);
 		res.status(StatusCodes.OK).json({ message: deletionMessage });
 	} catch (err: unknown) {
-		switch (true) {
-			case err instanceof UserNotFound:
-				return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
-			case err instanceof NotValidId:
-				return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
-			case err instanceof OrganizationNotFound:
-				return next(new NotFound(ErrorMsg.OrgNotFound));
-			case err instanceof NotAnOwnerPermissionFailed:
-				return next(new NotFound(ErrorMsg.UnAuthorizedOrgDelete));
-			case err instanceof OrganizationDeletionFailed:
-				return next(new Conflict(ErrorMsg.UnAuthorizedOrgDelete));
-			default:
-				return next(err);
+		if (err instanceof UserNotFound) {
+			return next(new AuthenticationError(GlobalErrorMsg.LoginFirst));
 		}
+		if (err instanceof NotValidId) {
+			return next(new AuthenticationError(GlobalErrorMsg.NotValidId));
+		}
+		if (err instanceof OrganizationNotFound) {
+			return next(new NotFound(ErrorMsg.OrgNotFound));
+		}
+		if (err instanceof NotAnOwnerPermissionFailed) {
+			return next(new NotFound(ErrorMsg.UnAuthorizedOrgDelete));
+		}
+		if (err instanceof OrganizationDeletionFailed) {
+			return next(new Conflict(ErrorMsg.UnAuthorizedOrgDelete));
+		}
+		return next(err);
 	}
 };

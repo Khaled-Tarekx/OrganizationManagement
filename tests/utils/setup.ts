@@ -1,5 +1,3 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
-
 jest.mock('../../src/setup/redisClient', () => {
 	const db: Record<any, any> = {};
 	const mockRedisClient = {
