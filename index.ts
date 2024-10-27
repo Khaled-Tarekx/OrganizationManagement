@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 
-import createApp from './src/setup/createApp';
+import { createApp } from './src/setup/createApp';
 import { redisClient } from './src/setup/redisClient';
 import { connectMongodbWithRetry } from './src/database/connection';
 

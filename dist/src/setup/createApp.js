@@ -13,4 +13,4 @@ const createApp = () => {
     app.use(ErrorHandler);
     return app;
 };
-export default createApp;
+export { createApp };

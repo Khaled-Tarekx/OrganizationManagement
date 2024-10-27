@@ -1,5 +1,5 @@
 import request from 'supertest';
-import createApp from '../src/setup/createApp';
+import { createApp } from '../src/setup/createApp';
 import { Application } from 'express';
 import { User, UserSchema } from '../src/modules/auth/models';
 import { faker } from '@faker-js/faker';

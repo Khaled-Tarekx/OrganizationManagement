@@ -18,4 +18,4 @@ const createApp = () => {
 	return app;
 };
 
-export default createApp;
+export { createApp };
