@@ -12,6 +12,7 @@ services:
   redis:
     image: "redis:latest"
     environment:
-      - REDIS_PASSWORD=admin # should be somewhere else
+      - REDIS_PASSWORD=admin
+      - REDIS_HOST=redis
     ports:
       - "6379:6379"
