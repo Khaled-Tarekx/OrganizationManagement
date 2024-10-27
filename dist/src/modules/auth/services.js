@@ -1,10 +1,10 @@
-import { User } from './models';
-import { checkResource, setTokenCache } from '../../utills/helpers';
-import { LoginError, RefreshTokenError, RegistrationError, UserNotFound, } from './errors/cause';
-import { createTokenFromUser, generateUserCacheKey, hashPassword, } from './utilities';
+import { User } from './models.js';
+import { checkResource, setTokenCache } from '../../utills/helpers.js';
+import { LoginError, RefreshTokenError, RegistrationError, UserNotFound, } from './errors/cause.js';
+import { createTokenFromUser, generateUserCacheKey, hashPassword, } from './utilities.js';
 import { verify } from 'argon2';
 import jwt from 'jsonwebtoken';
-import { redisClient } from '../../setup/redisClient';
+import { redisClient } from '../../setup/redisClient.js';
 export const registerUser = async (userInput) => {
     const { name, email, password } = userInput;
     const hashedPassword = await hashPassword(password);

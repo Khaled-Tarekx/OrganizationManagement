@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
-import * as AuthServices from './services';
-import { LoginError, PasswordHashingError, RefreshTokenError, RegistrationError, TokenGenerationFailed, UserNotFound, } from './errors/cause';
-import { AuthenticationError, Forbidden, NotFound, } from '../../custom-errors/main';
-import * as ErrorMsg from './errors/msg';
-import { TokenStoringFailed } from '../../utills/errors/cause';
+import * as AuthServices from './services.js';
+import { LoginError, PasswordHashingError, RefreshTokenError, RegistrationError, TokenGenerationFailed, UserNotFound, } from './errors/cause.js';
+import { AuthenticationError, Forbidden, NotFound, } from '../../custom-errors/main.js';
+import * as ErrorMsg from './errors/msg.js';
+import { TokenStoringFailed } from '../../utills/errors/cause.js';
 import jwt from 'jsonwebtoken';
 export const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;

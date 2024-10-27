@@ -1,11 +1,11 @@
 import request from 'supertest';
-import createApp from '../src/setup/createApp';
-import { User } from '../src/modules/auth/models';
+import createApp from '../src/setup/createApp.js';
+import { User } from '../src/modules/auth/models.js';
 import { faker } from '@faker-js/faker';
-import { Member, Organization, } from '../src/modules/organization/models';
+import { Member, Organization, } from '../src/modules/organization/models.js';
 import { mongoose } from '@typegoose/typegoose';
-import { createTokenFromUser } from '../src/modules/auth/utilities';
-import { AccessLevel } from '../src/modules/organization/types';
+import { createTokenFromUser } from '../src/modules/auth/utilities.js';
+import { AccessLevel } from '../src/modules/organization/types.js';
 let app;
 let accessToken;
 let organizationId;

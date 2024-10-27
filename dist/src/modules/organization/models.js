@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { getModelForClass, modelOptions, prop, } from '@typegoose/typegoose';
-import { AccessLevel } from './types';
+import { AccessLevel } from './types.js';
 import { Types } from 'mongoose';
 let MemberSchema = class MemberSchema {
     organization;

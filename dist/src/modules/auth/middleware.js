@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { TokenVerificationFailed, UnAuthorized, UserNotFound, } from './errors/cause';
-import { User } from './models';
-import { findResourceById } from '../../utills/helpers';
+import { TokenVerificationFailed, UnAuthorized, UserNotFound, } from './errors/cause.js';
+import { User } from './models.js';
+import { findResourceById } from '../../utills/helpers.js';
 const access_secret = process.env.ACCESS_SECRET_KEY;
 export const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;

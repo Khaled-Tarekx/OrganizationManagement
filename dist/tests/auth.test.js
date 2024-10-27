@@ -1,7 +1,7 @@
 import request from 'supertest';
-import createApp from '../src/setup/createApp';
+import createApp from '../src/setup/createApp.js';
 import mongoose from 'mongoose';
-import { User } from '../src/modules/auth/models';
+import { User } from '../src/modules/auth/models.js';
 import { faker } from '@faker-js/faker';
 let app = createApp();
 let refreshToken;

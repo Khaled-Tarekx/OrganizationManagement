@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
-import createApp from './src/setup/createApp';
-import { redisClient } from './src/setup/redisClient';
-import { connectMongodbWithRetry } from './src/database/connection';
+import createApp from './src/setup/createApp.js';
+import { redisClient } from './src/setup/redisClient.js';
+import { connectMongodbWithRetry } from './src/database/connection.js';
 const port = process.env.PORT;
 export const app = express();
 const bootstrap = async () => {

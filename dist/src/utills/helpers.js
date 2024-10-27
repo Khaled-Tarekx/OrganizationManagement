@@ -1,8 +1,8 @@
 import z from 'zod';
 import { Types } from 'mongoose';
-import { InvitationExpired, NotResourceOwner, NotValidId, TokenStoringFailed, } from './errors/cause';
-import { RefreshTokenError, UserNotFound, } from '../modules/auth/errors/cause';
-import { redisClient } from '../setup/redisClient';
+import { InvitationExpired, NotResourceOwner, NotValidId, TokenStoringFailed, } from './errors/cause.js';
+import { RefreshTokenError, UserNotFound, } from '../modules/auth/errors/cause.js';
+import { redisClient } from '../setup/redisClient.js';
 const DEFAULT_EXPIRATION = 7 * 24 * 60 * 60;
 export const setTokenCache = async (key, value, expiration = Math.floor(Number(DEFAULT_EXPIRATION))) => {
     try {

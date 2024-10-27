@@ -1,14 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
-import { checkUser } from '../../utills/helpers';
-import * as InviteServices from './services';
-import { InvitationFailed, inviteNotFound, NotAdminOrOwner, } from './errors/cause';
-import * as ErrorMsg from './errors/msg';
-import { MemberCreationFailed, MemberNotFound, OrganizationNotFound, } from '../organization/errors/cause';
-import { UserNotFound } from '../auth/errors/cause';
-import { AuthenticationError, Forbidden, NotFound, Conflict, ResourceGone, } from '../../custom-errors/main';
-import { InvitationExpired } from '../../utills/errors/cause';
-import * as GlobalErrorMsg from '../../utills/errors/msg';
-import * as OrganizationErrors from '../organization/errors/msg';
+import { checkUser } from '../../utills/helpers.js';
+import * as InviteServices from './services.js';
+import { InvitationFailed, inviteNotFound, NotAdminOrOwner, } from './errors/cause.js';
+import * as ErrorMsg from './errors/msg.js';
+import { MemberCreationFailed, MemberNotFound, OrganizationNotFound, } from '../organization/errors/cause.js';
+import { UserNotFound } from '../auth/errors/cause.js';
+import { AuthenticationError, Forbidden, NotFound, Conflict, ResourceGone, } from '../../custom-errors/main.js';
+import { InvitationExpired } from '../../utills/errors/cause.js';
+import * as GlobalErrorMsg from '../../utills/errors/msg.js';
+import * as OrganizationErrors from '../organization/errors/msg.js';
 export const createInviteLink = async (req, res, next) => {
     const { organizationId } = req.params;
     const { user_email } = req.body;

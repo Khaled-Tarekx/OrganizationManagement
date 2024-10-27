@@ -1,8 +1,8 @@
 import express from 'express';
-import { getOrganizations, getMembersOfOrganization, createOrganization, getOrganization, deleteOrganization, updateOrganization, } from './controllers';
-import { acceptInvitation, createInviteLink } from '../invite/controllers';
-import { validateResource } from '../../utills/middlewares';
-import { acceptInvitationSchema, createInviteSchema, } from '../invite/validation';
+import { getOrganizations, getMembersOfOrganization, createOrganization, getOrganization, deleteOrganization, updateOrganization, } from './controllers.js';
+import { acceptInvitation, createInviteLink } from '../invite/controllers.js';
+import { validateResource } from '../../utills/middlewares.js';
+import { acceptInvitationSchema, createInviteSchema, } from '../invite/validation.js';
 const router = express.Router();
 router.route('/members/:organizationId/').get(getMembersOfOrganization);
 router

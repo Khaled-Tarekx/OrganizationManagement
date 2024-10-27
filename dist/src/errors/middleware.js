@@ -1,4 +1,4 @@
-import { handleDBErrors, isDBError, sendErrorForDev, sendErrorForProd, } from './helpers';
+import { handleDBErrors, isDBError, sendErrorForDev, sendErrorForProd, } from './helpers.js';
 const ErrorHandler = (error, req, res, next) => {
     error.statusCode = error.statusCode || 500;
     const environment = process.env.NODE_ENV || 'production';

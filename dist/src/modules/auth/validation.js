@@ -1,5 +1,5 @@
 import z from 'zod';
-import { Role } from './types';
+import { Role } from './types.js';
 // const regexString = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const createUserSchema = z.object({
     name: z.string({

@@ -1,4 +1,4 @@
-import CustomError from '../custom-errors/custom-error';
+import CustomError from '../custom-errors/custom-error.js';
 import { StatusCodes } from 'http-status-codes';
 const handleDuplicateFieldErrorDB = (err) => {
     const value = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)?.[0];

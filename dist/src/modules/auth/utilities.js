@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { hash } from 'argon2';
-import { PasswordHashingError, TokenGenerationFailed } from './errors/cause';
+import { PasswordHashingError, TokenGenerationFailed } from './errors/cause.js';
 export const createTokenFromUser = async (user, secret, expires = "1h") => {
     let token;
     try {

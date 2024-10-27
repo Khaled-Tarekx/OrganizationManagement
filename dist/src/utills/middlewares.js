@@ -1,5 +1,5 @@
 import { ZodError } from 'zod';
-import { ValidationError } from './errors/cause';
+import { ValidationError } from './errors/cause.js';
 export const validateResource = ({ bodySchema, querySchema, paramsSchema, }) => {
     return async (req, _res, next) => {
         try {

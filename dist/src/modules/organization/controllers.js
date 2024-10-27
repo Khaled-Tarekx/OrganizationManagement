@@ -1,13 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
-import * as OrgServices from './services';
-import { checkUser } from '../../utills/helpers';
-import { NotValidId } from '../../utills/errors/cause';
-import { BadRequestError, AuthenticationError, NotFound, Conflict, } from '../../custom-errors/main';
-import { UserNotFound } from '../auth/errors/cause';
-import { InvalidRole, MemberAlreadyExists, MemberCreationFailed, MemberNotFound, NotAnOwnerPermissionFailed, OrganizationCreationFailed, OrganizationDeletionFailed, OrganizationNotFound, OrganizationUpdatingFailed, } from './errors/cause';
-import * as GlobalErrorMsg from '../../utills/errors/msg';
-import * as ErrorMsg from './errors/msg';
-import Forbidden from "../../custom-errors/forbidden";
+import * as OrgServices from './services.js';
+import { checkUser } from '../../utills/helpers.js';
+import { NotValidId } from '../../utills/errors/cause.js';
+import { BadRequestError, AuthenticationError, NotFound, Conflict, } from '../../custom-errors/main.js';
+import { UserNotFound } from '../auth/errors/cause.js';
+import { InvalidRole, MemberAlreadyExists, MemberCreationFailed, MemberNotFound, NotAnOwnerPermissionFailed, OrganizationCreationFailed, OrganizationDeletionFailed, OrganizationNotFound, OrganizationUpdatingFailed, } from './errors/cause.js';
+import * as GlobalErrorMsg from '../../utills/errors/msg.js';
+import * as ErrorMsg from './errors/msg.js';
+import Forbidden from "../../custom-errors/forbidden.js";
 export const getMembersOfOrganization = async (req, res, next) => {
     const { organizationId } = req.params;
     try {

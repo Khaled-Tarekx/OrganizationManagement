@@ -9,8 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { getModelForClass, prop } from '@typegoose/typegoose';
 import { v4 as uuidv4 } from 'uuid';
-import { UserSchema } from '../auth/models';
-import { OrganizationSchema } from '../organization/models';
+import { UserSchema } from '../auth/models.js';
+import { OrganizationSchema } from '../organization/models.js';
 export class InvitationSchema {
     token;
     user;

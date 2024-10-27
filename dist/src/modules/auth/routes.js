@@ -1,7 +1,7 @@
 import express from 'express';
-import { refreshSession, registerUser, signInUser } from './controllers';
-import { validateResource } from '../../utills/middlewares';
-import { loginSchema, createUserSchema, refreshTokenSchema, } from './validation';
+import { refreshSession, registerUser, signInUser } from './controllers.js';
+import { validateResource } from '../../utills/middlewares.js';
+import { loginSchema, createUserSchema, refreshTokenSchema, } from './validation.js';
 const router = express.Router();
 router.post('/signup', validateResource({ bodySchema: createUserSchema }), registerUser);
 router.post('/signin', validateResource({ bodySchema: loginSchema }), signInUser);
