@@ -8,7 +8,7 @@
     "test:dev": "jest /tests --verbose",
     "dev": "nodemon --exec pnpm run start",
     "start": "tsc  && resolve-tspaths && node ./dist/index.js",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc && resolve-tspaths",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
