@@ -1,13 +1,19 @@
-# bigproject
+# organizationManagement
 
 To install dependencies:
 
 ```bash
-bun install
+pnpm install
 ```
 
 To run:
 
 ```bash
-bun run dev
+pnpm run dev
+```
+
+To run tests:
+
+```bash
+pnpm run test:dev
 ```
