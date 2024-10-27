@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express from 'express';
 import ErrorHandler from '../errors/middleware';
 import AuthRouter from '../modules/auth/routes';
 import OrganizationRouter from '../modules/organization/routes';

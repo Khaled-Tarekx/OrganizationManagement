@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import express from 'express';
 
 import { createApp } from './src/setup/createApp';
 import { redisClient } from './src/setup/redisClient';
@@ -13,7 +12,6 @@ app.get('/', async (req: any, res: any) => {
 });
 
 const bootstrap = async () => {
-	// const app = createApp();
 	await redisClient.connect();
 	await connectMongodbWithRetry();
 
