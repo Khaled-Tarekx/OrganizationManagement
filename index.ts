@@ -6,24 +6,23 @@ import { redisClient } from './src/setup/redisClient';
 import { connectMongodbWithRetry } from './src/database/connection';
 
 const port = process.env.PORT;
+const app = createApp();
 
-export const app = express();
+app.get('/', async (req: any, res: any) => {
+	res.status(200).json({ message: 'hello world' });
+});
 
 const bootstrap = async () => {
-	const app = createApp();
+	// const app = createApp();
 	await redisClient.connect();
 	await connectMongodbWithRetry();
-	app.get('/', async (req: any, res: any, next: any) => {
-		res.status(200).json({ message: 'hello world' });
-	});
-	app.listen(port, () => {
-		console.log(`App is listening on port ${port}`);
-	});
+
+	if (process.env.NODE_ENV !== 'prod') {
+		app.listen(port, () => {
+			console.log(`App is listening on port ${port}`);
+		});
+	}
 };
 
 bootstrap();
-// "config": {
-//   "mongodbMemoryServer": {
-//     "debug": "1"
-//   }
-// },
+export default app;
